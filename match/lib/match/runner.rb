@@ -163,7 +163,7 @@ module Match
     def fetch_certificate(params: nil, working_directory: nil, specific_cert_type: nil)
       cert_type = Match.cert_type_sym(specific_cert_type || params[:type])
 
-      certs = Dir[File.join(prefixed_working_directory, "certs", cert_type.to_s, "*.cer")]
+      certs = Dir[File.join(prefixed_working_directory, "certs", cert_type.to_s, "#{params[:certificate_id] || "*"}.cer")]
       keys = Dir[File.join(prefixed_working_directory, "certs", cert_type.to_s, "*.p12")]
 
       if certs.count == 0 || keys.count == 0

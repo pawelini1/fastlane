@@ -71,6 +71,11 @@ module Match
                                      code_gen_sensitive: true,
                                      default_value: CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier),
                                      default_value_dynamic: true),
+          FastlaneCore::ConfigItem.new(key: :certificate_id,
+                                     env_name: "MATCH_CERTIFICATE_ID",
+                                     description: "ID of the certificate to use",
+                                     optional: true,
+                                     default_value: nil),
 
         # App Store Connect API
         FastlaneCore::ConfigItem.new(key: :api_key_path,

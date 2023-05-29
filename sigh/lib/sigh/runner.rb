@@ -354,6 +354,7 @@ module Sigh
       end
 
       return certificates if Sigh.config[:development] # development profiles support multiple certificates
+      return [certificates.find { |c| c.id == Sigh.config[:cert_id] }] if Sigh.config[:cert_id]
       return [certificates.first]
     end
 

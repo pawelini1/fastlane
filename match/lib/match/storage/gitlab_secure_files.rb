@@ -137,6 +137,7 @@ module Match
         # `files_to_upload` is an array of files that need to be uploaded to GitLab Secure Files
         # Those doesn't mean they're new, it might just be they're changed
         # Either way, we'll upload them using the same technique
+        all_secure_files = @gitlab_client.files
 
         files_to_upload.each do |current_file|
           # Go from
@@ -147,8 +148,15 @@ module Match
 
           # We also remove the trailing `/`
           target_file = current_file.gsub(self.working_directory + "/", "")
-          UI.verbose("Uploading '#{target_file}' to GitLab Secure Files...")
-          @gitlab_client.upload_file(current_file, target_file)
+          if secure_file = all_secure_files.find { |c| c.file.name == target_file }
+            UI.verbose("Removing current '#{target_file}' from GitLab Secure Files...")
+            secure_file.delete
+            UI.verbose("Uploading '#{target_file}' to GitLab Secure Files...")
+            @gitlab_client.upload_file(current_file, target_file)
+          else
+            UI.verbose("Uploading '#{target_file}' to GitLab Secure Files...")
+            @gitlab_client.upload_file(current_file, target_file)
+          end
         end
       end
 
